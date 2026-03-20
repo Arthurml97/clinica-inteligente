@@ -14,11 +14,8 @@ services:
     container_name: clinica_backend
     ports:
       - "3000:3000"
-    environment:
-      - PORT=3000
-      - MONGO_URI=mongodb://mongodb:27017/clinica_inteligente
-      - JWT_SECRET=sua_chave_secreta_super_segura
-      - WEATHER_API_KEY=276c31d75d9b57c4fc8b79f028f2e89c
+    env_file:
+      - .env
     depends_on:
       - mongodb
 
