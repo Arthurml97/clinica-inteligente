@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: clinica_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build: ./backend
+    container_name: clinica_backend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - MONGO_URI=mongodb://mongodb:27017/clinica_inteligente
+      - JWT_SECRET=sua_chave_secreta_super_segura
+      - WEATHER_API_KEY=276c31d75d9b57c4fc8b79f028f2e89c
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./frontend
+    container_name: clinica_frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3000/api
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
